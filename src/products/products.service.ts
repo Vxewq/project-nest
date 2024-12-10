@@ -21,12 +21,16 @@ export class ProductsService {
     }
   }
 
-  async findAll(sortBy, order) {
+  async findAll(sortBy, order, page, limit) {
 
     const sortOrder = order === "ASK" ? 1 : -1
+    const pageAll = page | 1
+    const limitAll = limit | 2
     try {
-      const all = await this.productsModel.find().sort({[sortBy]: sortOrder}).populate('category').exec();
-      return all;
+      const all = await this.productsModel.find().sort({[sortBy]: sortOrder}).populate('category').skip((pageAll * limitAll) - limitAll).exec();
+      
+      const total = await this.productsModel.countDocuments()
+      return {products: all, total: total};
     } catch (error) {
       console.log(error);
       return 'Something went wrong';

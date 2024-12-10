@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { take } from 'rxjs';
 
 @Controller('products')
 export class ProductsController {
@@ -16,8 +17,10 @@ export class ProductsController {
   findAll(
     @Query('sortBy') sortBy: 'name' | 'price' = 'name', 
     @Query('order') order: 'ASC' | 'DESC' = 'ASC',  
+    @Query('page') page: number,  
+    @Query('limit') limit: number,  
   ) {
-    return this.productsService.findAll(sortBy, order);
+    return this.productsService.findAll(sortBy, order, page, limit);
   }
 
   @Get(':id')
