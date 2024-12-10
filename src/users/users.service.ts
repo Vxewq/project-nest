@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Products } from './entities/product.entity';
+import { Users } from './entities/user.entity';
 import { Model } from 'mongoose';
 
 @Injectable()
-export class ProductsService {
+export class UsersService {
   constructor(
-    @InjectModel(Products.name) private productsModel: Model<Products>,
+    @InjectModel(Users.name) private userModel: Model<Users>,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  async create(CreateUserDto:CreateUserDto) {
     try {
-      const newProduct = await this.productsModel.create(createProductDto);
-      return newProduct;
+      const newUser = await this.userModel.create(CreateUserDto);
+      return newUser;
     } catch (error) {
       console.log(error);
       return 'Something went wrong';
@@ -23,7 +23,7 @@ export class ProductsService {
 
   async findAll() {
     try {
-      const all = await this.productsModel.find().populate('category').exec();
+      const all = await this.userModel.find().populate('category').exec();
       return all;
     } catch (error) {
       console.log(error);
@@ -33,7 +33,7 @@ export class ProductsService {
 
   async findOne(id: string) {
     try {
-      const uno = await this.productsModel.findById(id).exec();
+      const uno = await this.userModel.findById(id).exec();
       return uno;
     } catch (error) {
       console.log(error);
@@ -41,9 +41,9 @@ export class ProductsService {
     }
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateUserDto) {
     try {
-      const updated = await this.productsModel
+      const updated = await this.userModel
         .findByIdAndUpdate(id, updateProductDto, { new: true })
         .exec();
       return updated;
@@ -55,8 +55,8 @@ export class ProductsService {
 
   async remove(id: string) {
     try {
-      const deleted = await this.productsModel.findByIdAndDelete(id).exec();
-      return "The products deleted succesfully";
+      const deleted = await this.userModel.findByIdAndDelete(id).exec();
+      return "The user deleted succesfully";
     } catch (error) {
       console.log(error);
       return 'Something went wrong';

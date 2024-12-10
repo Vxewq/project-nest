@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export type ProductsDocument = HydratedDocument<Products>;
@@ -47,6 +47,11 @@ export class Products {
   @Prop()
   @IsString()
   image: string;
+
+
+  @Prop({type: Types.ObjectId, ref: "CategoryProducts"})
+  @IsString()
+  category: string
 }
 
 export const ProductsSchema = SchemaFactory.createForClass(Products);
