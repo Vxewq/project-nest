@@ -21,9 +21,11 @@ export class ProductsService {
     }
   }
 
-  async findAll() {
+  async findAll(sortBy, order) {
+
+    const sortOrder = order === "ASK" ? 1 : -1
     try {
-      const all = await this.productsModel.find().populate('category').exec();
+      const all = await this.productsModel.find().sort({[sortBy]: sortOrder}).populate('category').exec();
       return all;
     } catch (error) {
       console.log(error);
